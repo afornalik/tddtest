@@ -14,5 +14,15 @@ public class User {
         this.createDate = createDate;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
 }

@@ -9,9 +9,9 @@ import java.time.LocalDate;
 
 public class UserControllerTest {
 
-    private final String firstName = "Andrzej";
-    private final String lastName = "Kowalski";
-    private final LocalDate createDate = LocalDate.now();
+    private final String FIRST_NAME = "Andrzej";
+    private final String LAST_NAME = "Kowalski";
+    private final LocalDate CREATE_DATE = LocalDate.now();
     private User user;
 
     private UserController userController;
@@ -26,7 +26,7 @@ public class UserControllerTest {
     @Test
     public void shouldSaveUser() {
         //give
-        user = new User(firstName,lastName,createDate);;
+        user = new User(LAST_NAME,FIRST_NAME,CREATE_DATE);;
 
         //when
         userController.create(user);
@@ -34,5 +34,15 @@ public class UserControllerTest {
         //then
         BDDMockito.then(userRepository).should().save(user);
 
+    }
+
+    @Test(expected = IncorrectUserDataException.class)
+    public void shouldThrowIncorrectUserDataException() {
+        //give
+        user = new User(null,FIRST_NAME,CREATE_DATE);
+
+        //when
+        userController.create(user);
+        
     }
 }
