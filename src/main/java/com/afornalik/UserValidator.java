@@ -3,15 +3,26 @@ package com.afornalik;
 public class UserValidator {
 
     private User user;
+    private UserRepository userRepository;
 
-    public boolean checkUserData(User user) throws IncorrectUserDataException{
+    public UserValidator(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean checkUserData(User user) throws IncorrectUserDataException, UserAlreadyExistException {
         this.user = user;
         if(checkFirstName() && checkLastName() && checkCreateData()) {
-            return true;
+            if(!checkIfUserExist()) {
+                return true;
+            }else {
+                throw new UserAlreadyExistException();
+            }
         }else {
             throw new IncorrectUserDataException();
         }
     }
+
+
 
     private boolean checkCreateData() {
         if(user.getCreateDate().getYear() <= 2000){
@@ -29,4 +40,7 @@ public class UserValidator {
         return user.getFirstName() != null  ;
     }
 
+    private boolean checkIfUserExist(){
+        return userRepository.ifUserExist(user);
+    }
 }

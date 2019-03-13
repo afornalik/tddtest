@@ -2,16 +2,22 @@ package com.afornalik;
 
 public class UserController {
 
-    private UserValidator userValidator = new UserValidator();
+    private User user;
+    private UserValidator userValidator;
     private UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+
+    public UserController(User user, UserRepository userRepository) {
+        this.user = user;
         this.userRepository = userRepository;
+        this.userValidator = new UserValidator(userRepository);
+
     }
 
-    public void create(User user) throws IncorrectUserDataException{
-        if(userValidator.checkUserData(user)) {
+    public void create(User user) throws IncorrectUserDataException, UserAlreadyExistException {
+        if (userValidator.checkUserData(user)) {
             userRepository.save(user);
         }
     }
+
 }
