@@ -20,4 +20,11 @@ public class UserController {
         }
     }
 
+
+    public User select(User user) {
+        if(userRepository.ifUserExist(user)){
+           return  userRepository.select(user);
+        }
+        return null;
+    }
 }

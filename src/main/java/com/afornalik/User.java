@@ -1,12 +1,14 @@
 package com.afornalik;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class User {
 
     private final String firstName;
     private final String lastName;
     private final LocalDate createDate;
+
 
     public User(String firstName, String lastName, LocalDate createDate) {
         this.firstName = firstName;
@@ -25,4 +27,6 @@ public class User {
     public LocalDate getCreateDate() {
         return createDate;
     }
+
+
 }
