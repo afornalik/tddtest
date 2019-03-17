@@ -73,6 +73,23 @@ public class UserControllerTest {
         Assert.assertEquals(resultUser,user);
     }
 
+    @Test
+    public void shouldBlockAndSaveExistUser() {
+        //given
+        user.setBlocked(false);
+
+        //when
+        userController.blockUser(user);
+
+        //then
+        Assert.assertTrue(user.isBlocked());
+        BDDMockito.then(userRepository).should().save(user);
+
+
+    }
+
+
+
     private void createUser(User user) {
         BDDMockito.given(userRepository.ifUserExist(user)).willReturn(true);
     }

@@ -27,4 +27,11 @@ public class UserController {
         }
         return null;
     }
+
+    public void blockUser(User user) {
+        if(!user.isBlocked()){
+            user.setBlocked(true);
+            userRepository.save(user);
+        }
+    }
 }
