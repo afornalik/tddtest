@@ -8,7 +8,7 @@ public class User {
     private final String firstName;
     private final String lastName;
     private final LocalDate createDate;
-    private boolean isBlocked = false;
+    private boolean isBlocked;
 
     public User(String firstName, String lastName, LocalDate createDate) {
         this.firstName = firstName;

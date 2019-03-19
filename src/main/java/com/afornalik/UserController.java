@@ -34,9 +34,10 @@ public class UserController {
     }
 
     public void blockUser(User user) {
-        if(!user.isBlocked()){
-            user.setBlocked(true);
-            userRepository.save(user);
+        if(userRepository.ifUserExist(user))
+            if(!user.isBlocked()){
+                user.setBlocked(true);
+                userRepository.save(user);
         }
     }
 }

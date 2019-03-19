@@ -9,10 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
+
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -21,10 +24,12 @@ public class UserControllerTest {
     private final String LAST_NAME = "Kowalski";
     private final LocalDate CREATE_DATE = LocalDate.now();
     private User user = new User(LAST_NAME, FIRST_NAME, CREATE_DATE);
-    private UserController userController;
 
     @Mock
     private UserRepository userRepository;
+
+    @InjectMocks
+    private UserController userController = new UserController(user,userRepository);
 
     @Before
     public void init() {
@@ -36,13 +41,11 @@ public class UserControllerTest {
         //give
         user = new User(LAST_NAME, FIRST_NAME, CREATE_DATE);
 
-
         //when
         userController.create(user);
 
         //then
         BDDMockito.then(userRepository).should().save(user);
-
     }
 
     @Test(expected = IncorrectUserDataException.class)
@@ -57,7 +60,7 @@ public class UserControllerTest {
     @Test(expected = UserAlreadyExistException.class)
     public void shouldThrowUserAlreadyExistException() throws UserAlreadyExistException {
         //give
-        createUser(user);
+        userExist(user);
 
         //when
         userController.create(user);
@@ -66,7 +69,7 @@ public class UserControllerTest {
     @Test
     public void shouldReceiveExistedUser(){
         //given
-        createUser(user);
+        userExist(user);
         selectUser(user);
 
         //when
@@ -79,7 +82,10 @@ public class UserControllerTest {
     @Test
     public void shouldBlockAndSaveExistUser() {
         //given
-        user.setBlocked(false);
+        userExist(user);
+
+        //given - check before block
+        Assert.assertFalse(user.isBlocked());
 
         //when
         userController.blockUser(user);
@@ -88,12 +94,27 @@ public class UserControllerTest {
         Assert.assertTrue(user.isBlocked());
         BDDMockito.then(userRepository).should().save(user);
 
+    }
 
+    @Test
+    public void shouldNotBlockWhenUserUnexist() {
+        //given
+        user = null;
+        userDoesntExist(user);
+
+        //when
+        userController.blockUser(user);
+
+        //then
+        BDDMockito.then(userRepository).should(times(0)).save(user);
     }
 
 
+    private void userDoesntExist(User user) {
+        BDDMockito.given(userRepository.ifUserExist(user)).willReturn(false);
+    }
 
-    private void createUser(User user) {
+    private void userExist(User user) {
         BDDMockito.given(userRepository.ifUserExist(user)).willReturn(true);
     }
 
