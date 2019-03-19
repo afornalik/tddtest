@@ -1,4 +1,4 @@
-package com.afornalik;
+package com.afornalik.model;
 
 import java.time.LocalDate;
 import java.util.Objects;

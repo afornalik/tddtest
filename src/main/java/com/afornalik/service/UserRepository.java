@@ -1,4 +1,6 @@
-package com.afornalik;
+package com.afornalik.service;
+
+import com.afornalik.model.User;
 
 public interface UserRepository {
 
