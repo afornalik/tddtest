@@ -10,14 +10,16 @@ public class UserController {
     private User user;
     private UserValidator userValidator;
     private UserRepository userRepository;
+    private EditUser editUser;
 
 
-    public UserController(User user, UserRepository userRepository) {
+    public UserController(User user, UserRepository userRepository, EditUser editUser) {
         this.user = user;
         this.userRepository = userRepository;
         this.userValidator = new UserValidator(userRepository);
-
+        this.editUser =editUser;
     }
+
 
     public void create(User user) throws IncorrectUserDataException, UserAlreadyExistException {
         if (userValidator.checkUserData(user)) {
@@ -38,6 +40,15 @@ public class UserController {
             if(!user.isBlocked()){
                 user.setBlocked(true);
                 userRepository.save(user);
+        }
+    }
+
+
+    public User edit(User user) {
+        if(userRepository.ifUserExist(user)) {
+            return editUser.edit(user);
+        } else {
+            return null;
         }
     }
 }

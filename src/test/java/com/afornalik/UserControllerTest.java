@@ -24,16 +24,18 @@ public class UserControllerTest {
     private final String LAST_NAME = "Kowalski";
     private final LocalDate CREATE_DATE = LocalDate.now();
     private User user = new User(LAST_NAME, FIRST_NAME, CREATE_DATE);
+    private UserController userController;
 
     @Mock
     private UserRepository userRepository;
 
-    @InjectMocks
-    private UserController userController = new UserController(user,userRepository);
+    @Mock
+    private EditUser editUser;
+
 
     @Before
-    public void init() {
-        userController = new UserController(user,userRepository);
+    public void initVal() {
+        userController = new UserController(user, userRepository, editUser);
     }
 
     @Test
@@ -67,7 +69,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldReceiveExistedUser(){
+    public void shouldReceiveExistedUser() {
         //given
         userExist(user);
         selectUser(user);
@@ -76,7 +78,7 @@ public class UserControllerTest {
         User resultUser = userController.select(user);
 
         //then
-        Assert.assertEquals(resultUser,user);
+        Assert.assertEquals(resultUser, user);
     }
 
     @Test
@@ -108,6 +110,25 @@ public class UserControllerTest {
         //then
         BDDMockito.then(userRepository).should(times(0)).save(user);
     }
+
+    @Test
+    public void shouldEditExistUser() {
+        //given
+        userExist(user);
+        editUser(user);
+
+        //when
+        User result = userController.edit(user);
+
+        //then
+        Assert.assertNotNull(result);
+        Assert.assertNotEquals(user, result);
+    }
+
+    private void editUser(User user) {
+        BDDMockito.given(editUser.edit(user)).willReturn(new User("aa","dd",LocalDate.now()));
+    }
+
 
 
     private void userDoesntExist(User user) {
