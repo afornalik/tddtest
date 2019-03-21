@@ -1,19 +1,11 @@
 package com.afornalik;
 
 import com.afornalik.model.User;
-
-import java.time.LocalDate;
+import com.afornalik.service.UserAttribute;
 
 public class EditUser {
 
-
-    private User user;
-
-    public EditUser(User user) {
-        this.user = user;
-    }
-
-    public User edit(User user) {
-        return user;
+    public User edit( UserAttribute userAttribute) {
+        return userAttribute.returnUser();
     }
 }

@@ -1,6 +1,7 @@
 package com.afornalik;
 
 import com.afornalik.model.User;
+import com.afornalik.service.UserAttribute;
 import com.afornalik.service.UserRepository;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
@@ -11,13 +12,14 @@ public class UserController {
     private UserValidator userValidator;
     private UserRepository userRepository;
     private EditUser editUser;
+    private UserAttribute userAttribute;
 
 
     public UserController(User user, UserRepository userRepository, EditUser editUser) {
         this.user = user;
         this.userRepository = userRepository;
         this.userValidator = new UserValidator(userRepository);
-        this.editUser =editUser;
+        this.editUser = editUser;
     }
 
 
@@ -44,11 +46,9 @@ public class UserController {
     }
 
 
-    public User edit(User user) {
+    public void edit(UserAttribute userAttribute) {
         if(userRepository.ifUserExist(user)) {
-            return editUser.edit(user);
-        } else {
-            return null;
+            userRepository.save(editUser.edit(userAttribute));
         }
     }
 }

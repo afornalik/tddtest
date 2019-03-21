@@ -2,6 +2,8 @@ package com.afornalik;
 
 import com.afornalik.model.User;
 import com.afornalik.service.UserRepository;
+import com.afornalik.service.UserAttribute;
+import com.afornalik.service.userattribute.UserFirstNameChangeAttribute;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import org.junit.Assert;
@@ -9,12 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,14 +25,13 @@ public class UserControllerTest {
     private final String FIRST_NAME = "Andrzej";
     private final String LAST_NAME = "Kowalski";
     private final LocalDate CREATE_DATE = LocalDate.now();
-    private User user = new User(LAST_NAME, FIRST_NAME, CREATE_DATE);
+    private User user = new User(FIRST_NAME, LAST_NAME, CREATE_DATE);
     private UserController userController;
+    private UserAttribute userAttribute;
+    private EditUser editUser = new EditUser();
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private EditUser editUser;
 
 
     @Before
@@ -111,23 +112,23 @@ public class UserControllerTest {
         BDDMockito.then(userRepository).should(times(0)).save(user);
     }
 
+
     @Test
-    public void shouldEditExistUser() {
+    public void shouldEditUserName() {
         //given
         userExist(user);
-        editUser(user);
+        String oldName = user.getFirstName();
+        String newName = "Ala";
+        userAttribute = new UserFirstNameChangeAttribute(user,newName);
 
         //when
-        User result = userController.edit(user);
+        userController.edit(userAttribute);
 
         //then
-        Assert.assertNotNull(result);
-        Assert.assertNotEquals(user, result);
+        Assert.assertNotEquals(oldName,newName);
+        BDDMockito.then(userRepository).should().save(user);
     }
 
-    private void editUser(User user) {
-        BDDMockito.given(editUser.edit(user)).willReturn(new User("aa","dd",LocalDate.now()));
-    }
 
 
 
@@ -136,7 +137,7 @@ public class UserControllerTest {
     }
 
     private void userExist(User user) {
-        BDDMockito.given(userRepository.ifUserExist(user)).willReturn(true);
+        BDDMockito.given(userRepository.ifUserExist(any())).willReturn(true);
     }
 
     private void selectUser(User user) {

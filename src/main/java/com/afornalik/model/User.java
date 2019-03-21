@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class User {
 
-    private final String firstName;
-    private final String lastName;
+    private  String firstName;
+    private  String lastName;
     private final LocalDate createDate;
     private boolean isBlocked;
 
@@ -13,6 +13,14 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.createDate = createDate;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public boolean isBlocked() {
@@ -35,5 +43,13 @@ public class User {
         return createDate;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", createDate=" + createDate +
+                ", isBlocked=" + isBlocked +
+                '}';
+    }
 }
