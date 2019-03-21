@@ -3,8 +3,10 @@ package com.afornalik;
 import com.afornalik.model.User;
 import com.afornalik.service.UserRepository;
 import com.afornalik.service.UserAttribute;
+import com.afornalik.service.userattribute.UserBlockStatusChangeAttribute;
 import com.afornalik.service.userattribute.UserFirstNameChangeAttribute;
 import com.afornalik.service.userattribute.UserLastNameChangeAttribute;
+import com.afornalik.service.userattribute.UserStatus;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import org.junit.Assert;
@@ -84,7 +86,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldBlockAndSaveExistUser() {
+    public void shouldBlockExistUser() {
         //given
         userExist(user);
 
@@ -126,7 +128,7 @@ public class UserControllerTest {
         userController.edit(userAttribute);
 
         //then
-        Assert.assertNotEquals(oldFirstName,newFirstName);
+        Assert.assertNotEquals(oldFirstName,user.getFirstName());
         BDDMockito.then(userRepository).should().save(user);
     }
 
@@ -142,9 +144,24 @@ public class UserControllerTest {
         userController.edit(userAttribute);
 
         //then
-        Assert.assertNotEquals(oldLastName,newLastName);
+        Assert.assertNotEquals(oldLastName,user.getLastName());
         BDDMockito.then(userRepository).should().save(user);
+    }
 
+    @Test
+    public void shouldEditUserStatus() {
+        //given
+        userExist(user);
+        boolean isBlocked = user.isBlocked();
+        UserStatus userStatus = UserStatus.BLOCKED;
+        userAttribute = new UserBlockStatusChangeAttribute(user,userStatus);
+
+        //when
+        userController.edit(userAttribute);
+
+        //then
+        Assert.assertNotEquals(isBlocked,user.isBlocked());
+        BDDMockito.then(userRepository).should().save(user);
     }
 
 
