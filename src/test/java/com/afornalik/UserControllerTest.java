@@ -4,6 +4,7 @@ import com.afornalik.model.User;
 import com.afornalik.service.UserRepository;
 import com.afornalik.service.UserAttribute;
 import com.afornalik.service.userattribute.UserFirstNameChangeAttribute;
+import com.afornalik.service.userattribute.UserLastNameChangeAttribute;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import org.junit.Assert;
@@ -114,19 +115,36 @@ public class UserControllerTest {
 
 
     @Test
-    public void shouldEditUserName() {
+    public void shouldEditUserFirstName() {
         //given
         userExist(user);
-        String oldName = user.getFirstName();
-        String newName = "Ala";
-        userAttribute = new UserFirstNameChangeAttribute(user,newName);
+        String oldFirstName = user.getFirstName();
+        String newFirstName = "Ala";
+        userAttribute = new UserFirstNameChangeAttribute(user,newFirstName);
 
         //when
         userController.edit(userAttribute);
 
         //then
-        Assert.assertNotEquals(oldName,newName);
+        Assert.assertNotEquals(oldFirstName,newFirstName);
         BDDMockito.then(userRepository).should().save(user);
+    }
+
+    @Test
+    public void shouldEditUserLastName() {
+        //given
+        userExist(user);
+        String oldLastName = user.getLastName();
+        String newLastName = "Mika";
+        userAttribute = new UserLastNameChangeAttribute(user,newLastName);
+
+        //when
+        userController.edit(userAttribute);
+
+        //then
+        Assert.assertNotEquals(oldLastName,newLastName);
+        BDDMockito.then(userRepository).should().save(user);
+
     }
 
 
