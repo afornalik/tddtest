@@ -5,6 +5,7 @@ import com.afornalik.service.UserAttribute;
 import com.afornalik.service.UserRepository;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
+import com.afornalik.userexception.UserUnexistException;
 
 public class UserController {
 
@@ -46,9 +47,11 @@ public class UserController {
     }
 
 
-    public void edit(UserAttribute userAttribute) {
+    public void edit(UserAttribute userAttribute) throws UserUnexistException {
         if(userRepository.ifUserExist(user)) {
             userRepository.save(editUser.edit(userAttribute));
+        }else {
+            throw new UserUnexistException();
         }
     }
 }

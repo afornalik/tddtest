@@ -9,6 +9,7 @@ import com.afornalik.service.userattribute.UserLastNameChangeAttribute;
 import com.afornalik.service.userattribute.UserStatus;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
+import com.afornalik.userexception.UserUnexistException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +67,7 @@ public class UserControllerTest {
     @Test(expected = UserAlreadyExistException.class)
     public void shouldThrowUserAlreadyExistException() throws UserAlreadyExistException {
         //give
-        userExist(user);
+        userExist();
 
         //when
         userController.create(user);
@@ -75,7 +76,7 @@ public class UserControllerTest {
     @Test
     public void shouldReceiveExistedUser() {
         //given
-        userExist(user);
+        userExist();
         selectUser(user);
 
         //when
@@ -88,7 +89,7 @@ public class UserControllerTest {
     @Test
     public void shouldBlockExistUser() {
         //given
-        userExist(user);
+        userExist();
 
         //given - check before block
         Assert.assertFalse(user.isBlocked());
@@ -106,7 +107,7 @@ public class UserControllerTest {
     public void shouldNotBlockWhenUserUnexist() {
         //given
         user = null;
-        userDoesntExist(user);
+        userDoesntExist();
 
         //when
         userController.blockUser(user);
@@ -117,9 +118,9 @@ public class UserControllerTest {
 
 
     @Test
-    public void shouldEditUserFirstName() {
+    public void shouldEditUserFirstName() throws UserUnexistException {
         //given
-        userExist(user);
+        userExist();
         String oldFirstName = user.getFirstName();
         String newFirstName = "Ala";
         userAttribute = new UserFirstNameChangeAttribute(user,newFirstName);
@@ -133,9 +134,9 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldEditUserLastName() {
+    public void shouldEditUserLastName() throws UserUnexistException {
         //given
-        userExist(user);
+        userExist();
         String oldLastName = user.getLastName();
         String newLastName = "Mika";
         userAttribute = new UserLastNameChangeAttribute(user,newLastName);
@@ -149,9 +150,9 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldEditUserStatus() {
+    public void shouldEditUserStatus() throws UserUnexistException {
         //given
-        userExist(user);
+        userExist();
         boolean isBlocked = user.isBlocked();
         UserStatus userStatus = UserStatus.BLOCKED;
         userAttribute = new UserBlockStatusChangeAttribute(user,userStatus);
@@ -164,14 +165,24 @@ public class UserControllerTest {
         BDDMockito.then(userRepository).should().save(user);
     }
 
+    @Test (expected = UserUnexistException.class)
+    public void shouldThrowUserUnexistException() throws UserUnexistException {
+        //given
+        userDoesntExist();
 
+        //when
+        userController.edit(new UserFirstNameChangeAttribute(user,"newName"));
 
-
-    private void userDoesntExist(User user) {
-        BDDMockito.given(userRepository.ifUserExist(user)).willReturn(false);
     }
 
-    private void userExist(User user) {
+
+
+
+    private void userDoesntExist() {
+        BDDMockito.given(userRepository.ifUserExist(any())).willReturn(false);
+    }
+
+    private void userExist() {
         BDDMockito.given(userRepository.ifUserExist(any())).willReturn(true);
     }
 
