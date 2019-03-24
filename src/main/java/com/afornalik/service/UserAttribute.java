@@ -4,7 +4,7 @@ import com.afornalik.model.User;
 
 public interface UserAttribute {
 
-   void changeUserAttribute();
+   User changeUserAttribute();
 
-   User returnUser();
+
 }

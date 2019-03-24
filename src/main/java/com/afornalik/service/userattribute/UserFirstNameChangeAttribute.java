@@ -14,13 +14,10 @@ public class UserFirstNameChangeAttribute implements UserAttribute {
     }
 
     @Override
-    public void changeUserAttribute() {
+    public User changeUserAttribute() {
         user.setFirstName(newAttribute);
-    }
-
-    @Override
-    public User returnUser() {
-        changeUserAttribute();
         return user;
     }
+
+
 }

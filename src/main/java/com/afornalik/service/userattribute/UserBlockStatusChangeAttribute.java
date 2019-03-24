@@ -14,17 +14,13 @@ public class UserBlockStatusChangeAttribute implements UserAttribute {
     }
 
     @Override
-    public void changeUserAttribute() {
+    public User changeUserAttribute() {
         if (userStatus.equals(UserStatus.BLOCKED)) {
             user.setBlocked(true);
         } else if (userStatus.equals(UserStatus.UNBLOCKED)) {
             user.setBlocked(false);
         }
-    }
-
-    @Override
-    public User returnUser() {
-        changeUserAttribute();
         return user;
     }
+
 }

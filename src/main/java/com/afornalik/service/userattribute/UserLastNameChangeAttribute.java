@@ -14,13 +14,10 @@ public class UserLastNameChangeAttribute implements UserAttribute {
     }
 
     @Override
-    public void changeUserAttribute() {
+    public User changeUserAttribute() {
         user.setLastName(newAttribute);
-    }
-
-    @Override
-    public User returnUser() {
-        changeUserAttribute();
         return user;
     }
+
+
 }
