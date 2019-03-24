@@ -32,25 +32,25 @@ public class UserController {
 
 
     public User select(User user) {
-        if(userRepository.ifUserExist(user)){
-           return  userRepository.select(user);
+        if (userRepository.ifUserExist(user)) {
+            return userRepository.select(user);
         }
         return null;
     }
 
     public void blockUser(User user) {
-        if(userRepository.ifUserExist(user))
-            if(!user.isBlocked()){
+        if (userRepository.ifUserExist(user))
+            if (!user.isBlocked()) {
                 user.setBlocked(true);
                 userRepository.save(user);
-        }
+            }
     }
 
 
     public void edit(UserAttribute userAttribute) throws UserUnexistException {
-        if(userRepository.ifUserExist(user)) {
+        if (userRepository.ifUserExist(user)) {
             userRepository.save(editUser.edit(userAttribute));
-        }else {
+        } else {
             throw new UserUnexistException();
         }
     }

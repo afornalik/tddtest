@@ -2,12 +2,12 @@ package com.afornalik.service.userattribute;
 
 public enum UserStatus {
 
-    UNBLOCKED(false){
+    UNBLOCKED(false) {
         public boolean isBlocked() {
             return false;
         }
     },
-    BLOCKED(true){
+    BLOCKED(true) {
         public boolean isBlocked() {
             return true;
         }
