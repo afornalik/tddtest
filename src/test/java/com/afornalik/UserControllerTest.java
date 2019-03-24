@@ -173,6 +173,19 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void shouldRemoveUser() {
+        //given
+        userExist();
+
+        //when
+        userController.delete(user);
+
+        //
+        then(userRepository).should().delete(user);
+        assertNull(userController.select(user));
+    }
+
 
     private void userDoesntExist() {
         given(userRepository.ifUserExist(any())).willReturn(false);

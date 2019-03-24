@@ -54,4 +54,11 @@ public class UserController {
             throw new UserUnexistException();
         }
     }
+
+    public void delete(User user) {
+        if (userRepository.ifUserExist(user)){
+            userRepository.delete(user);
+            this.user = null;
+        }
+    }
 }
