@@ -16,7 +16,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.time.LocalDate;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
 
@@ -27,7 +26,7 @@ public class UserControllerTest {
     private final String LAST_NAME = "Kowalski";
     private final String PASSWORD = "654321";
     private final LocalDate CREATE_DATE = LocalDate.now();
-    private User user = new User(FIRST_NAME, LAST_NAME,PASSWORD, CREATE_DATE);
+    private User user;
     private UserController userController;
     private UserAttribute userAttribute;
     private EditUser editUser = new EditUser();
@@ -37,14 +36,14 @@ public class UserControllerTest {
 
 
     @Before
-    public void initVal() {
-        userController = new UserController(user, userRepository, editUser);
+    public void initValue() {
+        userController = new UserController( userRepository, editUser);
     }
 
     @Test
     public void shouldSaveUser() throws UserAlreadyExistException {
         //give
-
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
 
         //when
         userController.create(user);
@@ -56,7 +55,7 @@ public class UserControllerTest {
     @Test(expected = IncorrectUserDataException.class)
     public void shouldThrowIncorrectUserDataException() throws UserAlreadyExistException {
         //give
-        user = new User(null, LAST_NAME,PASSWORD, CREATE_DATE);
+        user = new User(null, LAST_NAME, PASSWORD, CREATE_DATE);
 
         //when
         userController.create(user);
@@ -65,7 +64,8 @@ public class UserControllerTest {
     @Test(expected = UserAlreadyExistException.class)
     public void shouldThrowUserAlreadyExistException() throws UserAlreadyExistException {
         //give
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
 
         //when
         userController.create(user);
@@ -74,7 +74,8 @@ public class UserControllerTest {
     @Test
     public void shouldReceiveExistedUser() {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
         selectUser(user);
 
         //when
@@ -87,7 +88,8 @@ public class UserControllerTest {
     @Test
     public void shouldBlockExistUser() {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
 
         //given - check before block
         assertFalse(user.isBlocked());
@@ -105,7 +107,7 @@ public class UserControllerTest {
     public void shouldNotBlockWhenUserUnexist() {
         //given
         user = null;
-        userDoesntExist();
+        userDoesntExist(user);
 
         //when
         userController.blockUser(user);
@@ -118,12 +120,13 @@ public class UserControllerTest {
     @Test
     public void shouldEditUserFirstName() throws UserUnexistException {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
         String newFirstName = "Ala";
         userAttribute = new UserFirstNameChangeAttribute(user, newFirstName);
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(user,userAttribute);
 
         //then
         assertNotEquals(FIRST_NAME, user.getFirstName());
@@ -133,12 +136,13 @@ public class UserControllerTest {
     @Test
     public void shouldEditUserLastName() throws UserUnexistException {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
         String newLastName = "Nowak";
         userAttribute = new UserLastNameChangeAttribute(user, newLastName);
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(user,userAttribute);
 
         //then
         assertNotEquals(LAST_NAME, user.getLastName());
@@ -148,11 +152,12 @@ public class UserControllerTest {
     @Test
     public void shouldEditUserStatus() throws UserUnexistException {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
         userAttribute = new UserBlockStatusChangeAttribute(user, UserStatus.BLOCKED);
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(user,userAttribute);
 
         //then
         assertNotEquals(false, user.isBlocked());
@@ -162,17 +167,19 @@ public class UserControllerTest {
     @Test(expected = UserUnexistException.class)
     public void shouldThrowUserUnexistException() throws UserUnexistException {
         //given
-        userDoesntExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userDoesntExist(user);
 
         //when
-        userController.edit(new UserFirstNameChangeAttribute(user, "newName"));
+        userController.edit(user,new UserFirstNameChangeAttribute(user, "newName"));
 
     }
 
     @Test
     public void shouldRemoveUser() {
         //given
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
 
         //when
         userController.delete(user);
@@ -185,25 +192,26 @@ public class UserControllerTest {
     @Test
     public void shouldChangePassword() throws UserUnexistException {
         //give
-        userExist();
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
         String newPassword = "123456";
         userAttribute = new UserPasswordChangeAttribute(user, newPassword);
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(user,userAttribute);
 
         //then
-        assertNotEquals(PASSWORD,user.getPassword());
+        assertNotEquals(PASSWORD, user.getPassword());
         then(userRepository).should().save(user);
     }
 
 
-    private void userDoesntExist() {
-        given(userRepository.ifUserExist(any())).willReturn(false);
+    private void userDoesntExist(User user) {
+        given(userRepository.ifUserExist(user)).willReturn(false);
     }
 
-    private void userExist() {
-        given(userRepository.ifUserExist(any())).willReturn(true);
+    private void userExist(User user) {
+        given(userRepository.ifUserExist(user)).willReturn(true);
     }
 
     private void selectUser(User user) {

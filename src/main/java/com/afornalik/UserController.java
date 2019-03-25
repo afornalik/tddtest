@@ -9,15 +9,13 @@ import com.afornalik.userexception.UserUnexistException;
 
 public class UserController {
 
-    private User user;
     private UserValidator userValidator;
     private UserRepository userRepository;
     private EditUser editUser;
     private UserAttribute userAttribute;
 
 
-    public UserController(User user, UserRepository userRepository, EditUser editUser) {
-        this.user = user;
+    public UserController( UserRepository userRepository, EditUser editUser) {
         this.userRepository = userRepository;
         this.userValidator = new UserValidator(userRepository);
         this.editUser = editUser;
@@ -47,7 +45,7 @@ public class UserController {
     }
 
 
-    public void edit(UserAttribute userAttribute) throws UserUnexistException {
+    public void edit(User user,UserAttribute userAttribute) throws UserUnexistException {
         if (userRepository.ifUserExist(user)) {
             userRepository.save(editUser.edit(userAttribute));
         } else {
@@ -56,9 +54,8 @@ public class UserController {
     }
 
     public void delete(User user) {
-        if (userRepository.ifUserExist(user)){
+        if (userRepository.ifUserExist(user)) {
             userRepository.delete(user);
-            this.user = null;
         }
     }
 }
