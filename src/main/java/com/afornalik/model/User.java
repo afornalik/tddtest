@@ -8,10 +8,12 @@ public class User {
     private  String lastName;
     private final LocalDate createDate;
     private boolean isBlocked;
+    private String password;
 
-    public User(String firstName, String lastName, LocalDate createDate) {
+    public User(String firstName, String lastName, String password, LocalDate createDate) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
         this.createDate = createDate;
     }
 
@@ -43,6 +45,15 @@ public class User {
         return createDate;
     }
 
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -52,4 +63,5 @@ public class User {
                 ", isBlocked=" + isBlocked +
                 '}';
     }
+
 }

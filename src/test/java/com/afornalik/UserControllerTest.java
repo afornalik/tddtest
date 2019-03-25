@@ -3,10 +3,7 @@ package com.afornalik;
 import com.afornalik.model.User;
 import com.afornalik.service.UserRepository;
 import com.afornalik.service.UserAttribute;
-import com.afornalik.service.userattribute.UserBlockStatusChangeAttribute;
-import com.afornalik.service.userattribute.UserFirstNameChangeAttribute;
-import com.afornalik.service.userattribute.UserLastNameChangeAttribute;
-import com.afornalik.service.userattribute.UserStatus;
+import com.afornalik.service.userattribute.*;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import com.afornalik.userexception.UserUnexistException;
@@ -28,8 +25,9 @@ public class UserControllerTest {
 
     private final String FIRST_NAME = "Andrzej";
     private final String LAST_NAME = "Kowalski";
+    private final String PASSWORD = "654321";
     private final LocalDate CREATE_DATE = LocalDate.now();
-    private User user = new User(FIRST_NAME, LAST_NAME, CREATE_DATE);
+    private User user = new User(FIRST_NAME, LAST_NAME,PASSWORD, CREATE_DATE);
     private UserController userController;
     private UserAttribute userAttribute;
     private EditUser editUser = new EditUser();
@@ -46,7 +44,7 @@ public class UserControllerTest {
     @Test
     public void shouldSaveUser() throws UserAlreadyExistException {
         //give
-        user = new User(LAST_NAME, FIRST_NAME, CREATE_DATE);
+
 
         //when
         userController.create(user);
@@ -58,7 +56,7 @@ public class UserControllerTest {
     @Test(expected = IncorrectUserDataException.class)
     public void shouldThrowIncorrectUserDataException() throws UserAlreadyExistException {
         //give
-        user = new User(null, LAST_NAME, CREATE_DATE);
+        user = new User(null, LAST_NAME,PASSWORD, CREATE_DATE);
 
         //when
         userController.create(user);
@@ -151,15 +149,13 @@ public class UserControllerTest {
     public void shouldEditUserStatus() throws UserUnexistException {
         //given
         userExist();
-        boolean isBlocked = user.isBlocked();
-        UserStatus userStatus = UserStatus.BLOCKED;
-        userAttribute = new UserBlockStatusChangeAttribute(user, userStatus);
+        userAttribute = new UserBlockStatusChangeAttribute(user, UserStatus.BLOCKED);
 
         //when
         userController.edit(userAttribute);
 
         //then
-        assertNotEquals(isBlocked, user.isBlocked());
+        assertNotEquals(false, user.isBlocked());
         then(userRepository).should().save(user);
     }
 
@@ -181,9 +177,24 @@ public class UserControllerTest {
         //when
         userController.delete(user);
 
-        //
+        //then
         then(userRepository).should().delete(user);
         assertNull(userController.select(user));
+    }
+
+    @Test
+    public void shouldChangePassword() throws UserUnexistException {
+        //give
+        userExist();
+        String newPassword = "123456";
+        userAttribute = new UserPasswordChangeAttribute(user, newPassword);
+
+        //when
+        userController.edit(userAttribute);
+
+        //then
+        assertNotEquals(PASSWORD,user.getPassword());
+        then(userRepository).should().save(user);
     }
 
 
