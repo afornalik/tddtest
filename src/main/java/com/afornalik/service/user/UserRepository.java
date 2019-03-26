@@ -1,4 +1,4 @@
-package com.afornalik.service;
+package com.afornalik.service.user;
 
 import com.afornalik.model.User;
 

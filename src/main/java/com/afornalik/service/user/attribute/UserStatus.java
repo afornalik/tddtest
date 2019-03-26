@@ -1,4 +1,4 @@
-package com.afornalik.service.userattribute;
+package com.afornalik.service.user.attribute;
 
 public enum UserStatus {
 

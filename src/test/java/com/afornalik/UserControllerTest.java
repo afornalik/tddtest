@@ -1,9 +1,10 @@
 package com.afornalik;
 
 import com.afornalik.model.User;
-import com.afornalik.service.UserRepository;
-import com.afornalik.service.UserAttribute;
-import com.afornalik.service.userattribute.*;
+import com.afornalik.service.mail.MailService;
+import com.afornalik.service.user.UserRepository;
+import com.afornalik.service.user.UserAttribute;
+import com.afornalik.service.user.attribute.*;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import com.afornalik.userexception.UserUnexistException;
@@ -34,10 +35,12 @@ public class UserControllerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private MailService mailService;
 
     @Before
     public void initValue() {
-        userController = new UserController( userRepository, editUser);
+        userController = new UserController( userRepository, editUser, mailService);
     }
 
     @Test
@@ -202,6 +205,21 @@ public class UserControllerTest {
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());
+        then(userRepository).should().save(user);
+    }
+
+    @Test
+    public void shouldResetPassword() {
+        //given
+        user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+        userExist(user);
+
+        //when
+        userController.resetPassword(user);
+
+        //then
+        assertNotEquals(PASSWORD,user.getPassword());
+        then(mailService).should().sendNewPassword(user);
         then(userRepository).should().save(user);
     }
 

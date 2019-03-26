@@ -1,7 +1,7 @@
 package com.afornalik;
 
 import com.afornalik.model.User;
-import com.afornalik.service.UserAttribute;
+import com.afornalik.service.user.UserAttribute;
 
 public class EditUser {
 

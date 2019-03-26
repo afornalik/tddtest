@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class User {
 
-    private  String firstName;
-    private  String lastName;
+    private String firstName;
+    private String lastName;
     private final LocalDate createDate;
     private boolean isBlocked;
     private String password;
@@ -44,7 +44,6 @@ public class User {
     public LocalDate getCreateDate() {
         return createDate;
     }
-
 
     public String getPassword() {
         return password;

@@ -1,7 +1,7 @@
-package com.afornalik.service.userattribute;
+package com.afornalik.service.user.attribute;
 
 import com.afornalik.model.User;
-import com.afornalik.service.UserAttribute;
+import com.afornalik.service.user.UserAttribute;
 
 public class UserPasswordChangeAttribute implements UserAttribute {
 
