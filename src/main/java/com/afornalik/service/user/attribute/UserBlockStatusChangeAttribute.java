@@ -16,9 +16,9 @@ public class UserBlockStatusChangeAttribute implements UserAttribute {
     @Override
     public User changeUserAttribute() {
         if (userStatus.equals(UserStatus.BLOCKED)) {
-            user.setBlocked(true);
+            user.setBlocked(UserStatus.UNBLOCKED);
         } else if (userStatus.equals(UserStatus.UNBLOCKED)) {
-            user.setBlocked(false);
+            user.setBlocked(UserStatus.BLOCKED);
         }
         return user;
     }

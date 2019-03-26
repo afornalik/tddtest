@@ -7,6 +7,7 @@ import com.afornalik.service.security.PasswordGeneratorApacheCommonLangImpl;
 import com.afornalik.service.user.UserAttribute;
 import com.afornalik.service.user.UserRepository;
 import com.afornalik.service.user.attribute.UserPasswordChangeAttribute;
+import com.afornalik.service.user.attribute.UserStatus;
 import com.afornalik.userexception.IncorrectUserDataException;
 import com.afornalik.userexception.UserAlreadyExistException;
 import com.afornalik.userexception.UserUnexistException;
@@ -45,8 +46,8 @@ public class UserController {
 
     public void blockUser(User user) {
         if (userRepository.ifUserExist(user))
-            if (!user.isBlocked()) {
-                user.setBlocked(true);
+            if (user.isBlocked() == UserStatus.UNBLOCKED) {
+                user.setBlocked(UserStatus.BLOCKED);
                 userRepository.save(user);
             }
     }

@@ -95,13 +95,13 @@ public class UserControllerTest {
         userExist(user);
 
         //given - check before block
-        assertFalse(user.isBlocked());
+        assertEquals(user.isBlocked(),UserStatus.UNBLOCKED);
 
         //when
         userController.blockUser(user);
 
         //then
-        assertTrue(user.isBlocked());
+        assertEquals(user.isBlocked(),UserStatus.BLOCKED);
         then(userRepository).should().save(user);
 
     }

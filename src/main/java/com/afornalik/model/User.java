@@ -1,5 +1,7 @@
 package com.afornalik.model;
 
+import com.afornalik.service.user.attribute.UserStatus;
+
 import java.time.LocalDate;
 
 public class User {
@@ -7,7 +9,7 @@ public class User {
     private String firstName;
     private String lastName;
     private final LocalDate createDate;
-    private boolean isBlocked;
+    private UserStatus isBlocked = UserStatus.UNBLOCKED;
     private String password;
 
     public User(String firstName, String lastName, String password, LocalDate createDate) {
@@ -25,11 +27,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isBlocked() {
+    public UserStatus isBlocked() {
         return isBlocked;
     }
 
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(UserStatus blocked) {
         isBlocked = blocked;
     }
 
