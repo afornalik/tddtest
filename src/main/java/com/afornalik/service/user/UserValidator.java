@@ -1,9 +1,8 @@
-package com.afornalik;
+package com.afornalik.service.user;
 
 import com.afornalik.model.User;
-import com.afornalik.service.user.UserRepository;
-import com.afornalik.userexception.IncorrectUserDataException;
-import com.afornalik.userexception.UserAlreadyExistException;
+import com.afornalik.service.user.exception.IncorrectUserDataException;
+import com.afornalik.service.user.exception.UserAlreadyExistException;
 
 public class UserValidator {
 

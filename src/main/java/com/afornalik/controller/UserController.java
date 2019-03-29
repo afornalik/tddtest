@@ -1,4 +1,4 @@
-package com.afornalik;
+package com.afornalik.controller;
 
 import com.afornalik.model.User;
 import com.afornalik.service.mail.MailService;
@@ -6,11 +6,13 @@ import com.afornalik.service.security.PasswordGenerator;
 import com.afornalik.service.security.PasswordGeneratorApacheCommonLangImpl;
 import com.afornalik.service.user.UserAttribute;
 import com.afornalik.service.user.UserRepository;
+import com.afornalik.service.user.EditUser;
+import com.afornalik.service.user.UserValidator;
 import com.afornalik.service.user.attribute.UserPasswordChangeAttribute;
 import com.afornalik.service.user.attribute.UserStatus;
-import com.afornalik.userexception.IncorrectUserDataException;
-import com.afornalik.userexception.UserAlreadyExistException;
-import com.afornalik.userexception.UserUnexistException;
+import com.afornalik.service.user.exception.IncorrectUserDataException;
+import com.afornalik.service.user.exception.UserAlreadyExistException;
+import com.afornalik.service.user.exception.UserUnexistException;
 
 public class UserController {
 

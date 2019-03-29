@@ -11,4 +11,6 @@ public interface UserRepository {
     User select(User user);
 
     void delete(User user);
+
+    User selectByFirstName(String firstName);
 }
