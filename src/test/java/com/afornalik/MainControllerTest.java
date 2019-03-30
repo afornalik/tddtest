@@ -4,6 +4,7 @@ import com.afornalik.controller.MainController;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.user.UserRepository;
+import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUser;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainControllerTest {
@@ -35,7 +38,7 @@ public class MainControllerTest {
     }
 
     @Test
-    public void shouldCreateUserSession() {
+    public void shouldCreateUserSession() throws UserUnexistException {
         //given
         User user = new User("Adam","Kowalski","123456", LocalDate.now());
         BDDMockito.when(userRepository.selectByFirstName("Adam")).thenReturn(user);
@@ -49,5 +52,29 @@ public class MainControllerTest {
         Assert.assertEquals(userSession.getLogedUser(),user);
 
 
+    }
+    @Test (expected = UserUnexistException.class)
+    public void shouldReturnUserNotExistException() throws UserUnexistException {
+        //given
+        BDDMockito.when(userRepository.selectByFirstName(any())).thenReturn(null);
+        BDDMockito.when(loginUser.getUserLogin()).thenReturn("Adam");
+
+        //when
+        userSession = mainController.logIn();
+    }
+
+    @Test
+    public void shouldNotLoginUser() throws UserUnexistException {
+        //given
+        User user = new User("Adam","Kowalski","123456", LocalDate.now());
+        BDDMockito.when(userRepository.selectByFirstName("Adam")).thenReturn(user);
+        BDDMockito.when(loginUser.getUserLogin()).thenReturn("Adam");
+        BDDMockito.when(loginUser.getPassword()).thenReturn("12343");
+
+        //when
+        userSession = mainController.logIn();
+
+        //than
+        Assert.assertNull(userSession);
     }
 }
