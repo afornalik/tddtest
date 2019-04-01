@@ -2,18 +2,24 @@ package com.afornalik.controller;
 
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
+import com.afornalik.service.mail.MailService;
+import com.afornalik.service.user.EditUser;
 import com.afornalik.service.user.UserRepository;
 import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUser;
 
 public class MainController {
 
-    public final UserRepository userRepository;
-    public final LoginUser loginUser;
+    private final UserRepository userRepository;
+    private final LoginUser loginUser;
+    private final MailService mailService;
+    private UserController userController;
+    private UserSession userSession;
 
-    public MainController(UserRepository userRepository,LoginUser loginUser) {
+    public MainController(UserRepository userRepository, LoginUser loginUser, MailService mailService) {
         this.userRepository = userRepository;
         this.loginUser = loginUser;
+        this.mailService = mailService;
     }
 
     public UserSession logIn() throws UserUnexistException {
@@ -21,11 +27,27 @@ public class MainController {
         User user = userRepository.selectByFirstName(tempLogin);
         if(user != null) {
             if (user.getPassword().equals(loginUser.getPassword())) {
+                this.userSession =new UserSession(user);
                 return new UserSession(user);
             }
             return null;
         }else {
              throw new UserUnexistException();
         }
+    }
+
+    public void enterUserSettings() {
+        if (userSession != null) {
+            createUserController();
+        }
+    }
+
+    private void createUserController() {
+        userController = new UserController(userRepository,new EditUser(),mailService,userSession);
+    }
+
+
+    public UserController getUserController() {
+        return userController;
     }
 }

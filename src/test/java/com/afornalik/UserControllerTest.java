@@ -2,6 +2,7 @@ package com.afornalik;
 
 import com.afornalik.controller.UserController;
 import com.afornalik.model.User;
+import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
 import com.afornalik.service.user.EditUser;
 import com.afornalik.service.user.UserRepository;
@@ -30,6 +31,7 @@ public class UserControllerTest {
     private final String PASSWORD = "654321";
     private final LocalDate CREATE_DATE = LocalDate.now();
     private User user;
+    private UserSession userSession;
     private UserController userController;
     private UserAttribute userAttribute;
     private EditUser editUser = new EditUser();
@@ -42,7 +44,7 @@ public class UserControllerTest {
 
     @Before
     public void initValue() {
-        userController = new UserController( userRepository, editUser, mailService);
+        userController = new UserController( userRepository, editUser, mailService, userSession);
     }
 
     @Test
