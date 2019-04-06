@@ -2,13 +2,13 @@ package com.afornalik.model;
 
 public class UserSession {
 
-    private final User logedUser;
+    private final User loggedUser;
 
-    public UserSession(User logedUser) {
-        this.logedUser = logedUser;
+    public UserSession(User loggedUser) {
+        this.loggedUser = loggedUser;
     }
 
-    public User getLogedUser() {
-        return logedUser;
+    public User getLoggedUser() {
+        return loggedUser;
     }
 }

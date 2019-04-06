@@ -1,20 +1,20 @@
 package com.afornalik.service.user;
 
-import com.afornalik.model.User;
+import com.afornalik.model.UserSession;
 import com.afornalik.service.user.exception.IncorrectUserDataException;
 import com.afornalik.service.user.exception.UserAlreadyExistException;
 
 public class UserValidator {
 
-    private User user;
-    private UserRepository userRepository;
+    private final UserSession userSession;
+    private final UserRepository userRepository;
 
-    public UserValidator(UserRepository userRepository) {
+    public UserValidator(UserSession userSession,UserRepository userRepository) {
+        this.userSession = userSession;
         this.userRepository = userRepository;
     }
 
-    public boolean checkUserData(User user) throws IncorrectUserDataException, UserAlreadyExistException {
-        this.user = user;
+    public boolean checkUserData() throws IncorrectUserDataException, UserAlreadyExistException {
         if(checkFirstName() && checkLastName() && checkCreateData()) {
             if(!checkIfUserExist()) {
                 return true;
@@ -29,7 +29,7 @@ public class UserValidator {
 
 
     private boolean checkCreateData() {
-        if(user.getCreateDate().getYear() <= 2000){
+        if(userSession.getLoggedUser().getCreateDate().getYear() <= 2000){
             return false;
         } else {
             return true;
@@ -37,14 +37,14 @@ public class UserValidator {
     }
 
     private boolean checkLastName() {
-        return user.getLastName() != null ;
+        return userSession.getLoggedUser().getLastName() != null ;
     }
 
     private boolean checkFirstName() {
-        return user.getFirstName() != null  ;
+        return userSession.getLoggedUser().getFirstName() != null  ;
     }
 
     private boolean checkIfUserExist(){
-        return userRepository.ifUserExist(user);
+        return userRepository.ifUserExist(userSession.getLoggedUser());
     }
 }

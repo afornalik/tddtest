@@ -1,6 +1,6 @@
 package com.afornalik.view;
 
-public interface LoginUser {
+public interface LoginUserView {
 
     String getUserLogin();
     String getPassword();
