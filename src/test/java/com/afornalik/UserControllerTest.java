@@ -72,7 +72,7 @@ public class UserControllerTest {
 
 
         //when
-        userController.edit( new FieldFirstNameChangeAttribute(user, new UserTestGenericAttribute<String>(newFirstName)),new UserTestGenericAttribute<String>(newFirstName));
+        userController.edit( new FieldFirstNameChangeAttribute(user, new UserTestGenericAttribute<String>(newFirstName)));
 
         //then
         assertNotEquals(FIRST_NAME, user.getFirstName());
@@ -88,7 +88,7 @@ public class UserControllerTest {
 
         System.out.println(userSession.getLoggedUser());
         //when
-        userController.edit(new FieldLastNameChangeAttribute(user, new UserTestGenericAttribute<String>(newLastName)),new UserTestGenericAttribute<String>(newLastName));
+        userController.edit(new FieldLastNameChangeAttribute(user, new UserTestGenericAttribute<String>(newLastName)));
 
         //then
         System.out.println(userSession.getLoggedUser());
@@ -103,7 +103,7 @@ public class UserControllerTest {
         createUserSession();
 
         //when
-        userController.edit(new FieldBlockStatusChangeAttribute(user, new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED)),new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED));
+        userController.edit(new FieldBlockStatusChangeAttribute(user, new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED)));
 
         //then
         assertNotEquals(false, user.isBlocked());
@@ -130,7 +130,7 @@ public class UserControllerTest {
         String newPassword = "123456";
 
         //when
-        userController.edit(new FieldPasswordChangeAttribute(user, new UserTestGenericAttribute<String>(newPassword)),new UserTestGenericAttribute<String>(newPassword));
+        userController.edit(new FieldPasswordChangeAttribute(user, new UserTestGenericAttribute<String>(newPassword)));
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());

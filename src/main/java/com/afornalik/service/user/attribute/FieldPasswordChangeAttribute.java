@@ -10,7 +10,7 @@ public class FieldPasswordChangeAttribute extends EditField {
     }
 
     private User changeUserAttribute() {
-        super.getUser().setPassword(super.getT().getT().toString());
+        super.getUser().setPassword(super.getUserTestGenericAttribute().getT().toString());
         return super.getUser();
     }
 

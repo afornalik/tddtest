@@ -29,12 +29,12 @@ public class UserController {
         return userSession.getLoggedUser();
     }
 
-    public void edit(EditField editField, UserTestGenericAttribute userTestGenericAttribute) {
+    public void edit(EditField editField) {
 
-        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
-        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
-        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
-        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
+        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(),editField.getUserTestGenericAttribute());
+        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
+        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
+        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
 
         fieldPasswordChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
         fieldFirstNameChangeAttribute.setNextAttributeClass(fieldLastNameChangeAttribute);
@@ -50,7 +50,7 @@ public class UserController {
 
     public void resetPassword() {
             String newPassword = passwordGenerator.generatePassword();
-            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new UserTestGenericAttribute<String>(newPassword)),new UserTestGenericAttribute<String>(newPassword));
+            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new UserTestGenericAttribute<String>(newPassword)));
             mailService.sendNewPassword(userSession.getLoggedUser());
 
     }

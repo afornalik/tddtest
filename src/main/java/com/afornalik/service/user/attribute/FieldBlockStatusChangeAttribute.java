@@ -14,9 +14,9 @@ public class FieldBlockStatusChangeAttribute extends EditField {
 
 
     private User changeUserAttribute() {
-        if (super.getT().getT().equals(UserStatus.BLOCKED)) {
+        if (super.getUserTestGenericAttribute().getT().equals(UserStatus.BLOCKED)) {
             super.getUser().setBlocked(UserStatus.UNBLOCKED);
-        } else if (super.getT().getT().equals(UserStatus.UNBLOCKED)) {
+        } else if (super.getUserTestGenericAttribute().getT().equals(UserStatus.UNBLOCKED)) {
             super.getUser().setBlocked(UserStatus.BLOCKED);
         }
         return super.getUser();

@@ -14,7 +14,7 @@ public class FieldFirstNameChangeAttribute extends EditField {
     }
 
     private User changeUserAttribute() {
-        super.getUser().setFirstName(super.getT().getT().toString());
+        super.getUser().setFirstName(super.getUserTestGenericAttribute().getT().toString());
         return super.getUser();
     }
 

@@ -18,7 +18,7 @@ public abstract class EditField{
         return user;
     }
 
-    public UserTestGenericAttribute getT() {
+    public UserTestGenericAttribute getUserTestGenericAttribute() {
         return userTestGenericAttribute;
     }
 
