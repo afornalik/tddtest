@@ -1,6 +1,6 @@
 package com.afornalik.model;
 
-import com.afornalik.service.user.attribute.UserStatus;
+import com.afornalik.service.user.attribute.value.UserStatus;
 
 import java.time.LocalDate;
 

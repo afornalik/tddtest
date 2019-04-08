@@ -5,25 +5,21 @@ import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
 import com.afornalik.service.security.PasswordGenerator;
 import com.afornalik.service.security.PasswordGeneratorApacheCommonLangImpl;
-import com.afornalik.service.user.UserAttribute;
 import com.afornalik.service.user.UserRepository;
-import com.afornalik.service.user.EditUser;
-import com.afornalik.service.user.attribute.UserPasswordChangeAttribute;
-import com.afornalik.service.user.attribute.UserStatus;
+import com.afornalik.service.user.attribute.*;
+import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
 import com.afornalik.view.LoginUserView;
 
 public class UserController {
 
     private final UserRepository userRepository;
-    private final EditUser editUser;
     private final MailService mailService;
     private UserSession userSession;
     private final LoginUserView loginUserView;
     private final PasswordGenerator passwordGenerator = new PasswordGeneratorApacheCommonLangImpl();
 
-    public UserController(UserRepository userRepository, EditUser editUser, MailService mailService, UserSession userSession, LoginUserView loginUserView) {
+    public UserController(UserRepository userRepository, MailService mailService, UserSession userSession, LoginUserView loginUserView) {
         this.userRepository = userRepository;
-        this.editUser = editUser;
         this.mailService = mailService;
         this.userSession = userSession;
         this.loginUserView = loginUserView;
@@ -33,8 +29,18 @@ public class UserController {
         return userSession.getLoggedUser();
     }
 
-    public void edit(UserAttribute userAttribute) {
-        userRepository.save(editUser.edit(userAttribute));
+    public void edit(EditField editField, UserTestGenericAttribute userTestGenericAttribute) {
+
+        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
+        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
+        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
+        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), userTestGenericAttribute);
+
+        fieldPasswordChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
+        fieldFirstNameChangeAttribute.setNextAttributeClass(fieldLastNameChangeAttribute);
+        fieldLastNameChangeAttribute.setNextAttributeClass(fieldBlockStatusChangeAttribute);
+
+        userRepository.save(fieldPasswordChangeAttribute.changeAttribute(editField));
     }
 
     public void delete() {
@@ -44,8 +50,7 @@ public class UserController {
 
     public void resetPassword() {
             String newPassword = passwordGenerator.generatePassword();
-            editUser.edit(new UserPasswordChangeAttribute(userSession.getLoggedUser(), newPassword));
-            userRepository.save(userSession.getLoggedUser());
+            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new UserTestGenericAttribute<String>(newPassword)),new UserTestGenericAttribute<String>(newPassword));
             mailService.sendNewPassword(userSession.getLoggedUser());
 
     }

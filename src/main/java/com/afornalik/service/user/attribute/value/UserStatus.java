@@ -1,6 +1,6 @@
-package com.afornalik.service.user.attribute;
+package com.afornalik.service.user.attribute.value;
 
-public enum UserStatus {
+public enum UserStatus  {
 
     UNBLOCKED(false) ,
     BLOCKED(true) ;
@@ -10,6 +10,10 @@ public enum UserStatus {
     UserStatus(boolean status) {
         this.status = status;
 
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 
     @Override

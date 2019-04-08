@@ -4,10 +4,11 @@ import com.afornalik.controller.UserController;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
-import com.afornalik.service.user.EditUser;
+import com.afornalik.service.user.attribute.EditField;
 import com.afornalik.service.user.UserRepository;
-import com.afornalik.service.user.UserAttribute;
 import com.afornalik.service.user.attribute.*;
+import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.UserStatus;
 import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUserView;
 import org.junit.Before;
@@ -30,8 +31,7 @@ public class UserControllerTest {
     private final LocalDate CREATE_DATE = LocalDate.now();
     private final User user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
     private UserController userController;
-    private UserAttribute userAttribute;
-    private EditUser editUser = new EditUser();
+
 
     @Mock
     private UserSession userSession = new UserSession(user) ;
@@ -47,7 +47,7 @@ public class UserControllerTest {
 
     @Before
     public void initValue() {
-        userController = new UserController( userRepository, editUser, mailService, userSession,loginUserView);
+        userController = new UserController( userRepository, mailService, userSession,loginUserView);
     }
 
     @Test
@@ -67,41 +67,43 @@ public class UserControllerTest {
     @Test
     public void shouldEditUserFirstName() throws UserUnexistException {
         //given
-
+        createUserSession();
         String newFirstName = "Ala";
-        userAttribute = new UserFirstNameChangeAttribute(user, newFirstName);
+
 
         //when
-        userController.edit(userAttribute);
+        userController.edit( new FieldFirstNameChangeAttribute(user, new UserTestGenericAttribute<String>(newFirstName)),new UserTestGenericAttribute<String>(newFirstName));
 
         //then
         assertNotEquals(FIRST_NAME, user.getFirstName());
+        assertEquals(newFirstName,user.getFirstName());
         then(userRepository).should().save(user);
     }
 
     @Test
     public void shouldEditUserLastName() throws UserUnexistException {
         //given
-
+        createUserSession();
         String newLastName = "Nowak";
-        userAttribute = new UserLastNameChangeAttribute(user, newLastName);
 
+        System.out.println(userSession.getLoggedUser());
         //when
-        userController.edit(userAttribute);
+        userController.edit(new FieldLastNameChangeAttribute(user, new UserTestGenericAttribute<String>(newLastName)),new UserTestGenericAttribute<String>(newLastName));
 
         //then
+        System.out.println(userSession.getLoggedUser());
         assertNotEquals(LAST_NAME, user.getLastName());
+        assertEquals(newLastName, user.getLastName());
         then(userRepository).should().save(user);
     }
 
     @Test
     public void shouldEditUserStatus() throws UserUnexistException {
         //given
-
-        userAttribute = new UserBlockStatusChangeAttribute(user, UserStatus.BLOCKED);
+        createUserSession();
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(new FieldBlockStatusChangeAttribute(user, new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED)),new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED));
 
         //then
         assertNotEquals(false, user.isBlocked());
@@ -124,12 +126,11 @@ public class UserControllerTest {
     @Test
     public void shouldChangePassword() throws UserUnexistException {
         //give
-
+        createUserSession();
         String newPassword = "123456";
-        userAttribute = new UserPasswordChangeAttribute(user, newPassword);
 
         //when
-        userController.edit(userAttribute);
+        userController.edit(new FieldPasswordChangeAttribute(user, new UserTestGenericAttribute<String>(newPassword)),new UserTestGenericAttribute<String>(newPassword));
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());

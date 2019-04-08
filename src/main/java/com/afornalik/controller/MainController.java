@@ -3,7 +3,6 @@ package com.afornalik.controller;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
-import com.afornalik.service.user.EditUser;
 import com.afornalik.service.user.UserRepository;
 import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUserView;
@@ -41,7 +40,7 @@ public class MainController {
     }
 
     private void createUserController() {
-        userController = new UserController(userRepository, new EditUser(), mailService, userSession,loginUserView);
+        userController = new UserController(userRepository, mailService, userSession,loginUserView);
     }
 
 
