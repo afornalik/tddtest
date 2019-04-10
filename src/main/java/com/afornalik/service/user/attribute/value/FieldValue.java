@@ -1,10 +1,10 @@
 package com.afornalik.service.user.attribute.value;
 
-public class UserTestGenericAttribute<T> {
+public class FieldValue<T> {
 
     private final T t;
 
-    public UserTestGenericAttribute(T t) {
+    public FieldValue(T t) {
         this.t = t;
     }
 

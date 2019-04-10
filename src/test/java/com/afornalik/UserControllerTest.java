@@ -4,10 +4,9 @@ import com.afornalik.controller.UserController;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
-import com.afornalik.service.user.attribute.EditField;
 import com.afornalik.service.user.UserRepository;
 import com.afornalik.service.user.attribute.*;
-import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.FieldValue;
 import com.afornalik.service.user.attribute.value.UserStatus;
 import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUserView;
@@ -53,7 +52,6 @@ public class UserControllerTest {
     @Test
     public void shouldReceiveExistUser() {
         //given
-
         createUserSession();
 
         //when
@@ -70,9 +68,8 @@ public class UserControllerTest {
         createUserSession();
         String newFirstName = "Ala";
 
-
         //when
-        userController.edit( new FieldFirstNameChangeAttribute(user, new UserTestGenericAttribute<String>(newFirstName)));
+        userController.edit( new FieldFirstNameChangeAttribute(user, new FieldValue<String>(newFirstName)));
 
         //then
         assertNotEquals(FIRST_NAME, user.getFirstName());
@@ -88,7 +85,7 @@ public class UserControllerTest {
 
         System.out.println(userSession.getLoggedUser());
         //when
-        userController.edit(new FieldLastNameChangeAttribute(user, new UserTestGenericAttribute<String>(newLastName)));
+        userController.edit(new FieldLastNameChangeAttribute(user, new FieldValue<String>(newLastName)));
 
         //then
         System.out.println(userSession.getLoggedUser());
@@ -103,7 +100,7 @@ public class UserControllerTest {
         createUserSession();
 
         //when
-        userController.edit(new FieldBlockStatusChangeAttribute(user, new UserTestGenericAttribute<UserStatus>(UserStatus.BLOCKED)));
+        userController.edit(new FieldBlockStatusChangeAttribute(user, new FieldValue<UserStatus>(UserStatus.BLOCKED)));
 
         //then
         assertNotEquals(false, user.isBlocked());
@@ -130,7 +127,7 @@ public class UserControllerTest {
         String newPassword = "123456";
 
         //when
-        userController.edit(new FieldPasswordChangeAttribute(user, new UserTestGenericAttribute<String>(newPassword)));
+        userController.edit(new FieldPasswordChangeAttribute(user, new FieldValue<String>(newPassword)));
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());
@@ -150,12 +147,6 @@ public class UserControllerTest {
         then(mailService).should().sendNewPassword(user);
         then(userRepository).should().save(user);
     }
-
-
-    private void userDoesntExist(User user) {
-        given(userRepository.ifUserExist(user)).willReturn(false);
-    }
-
 
     private void createUserSession() {
         given(userSession.getLoggedUser()).willReturn(user);

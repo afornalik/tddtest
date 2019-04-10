@@ -2,21 +2,21 @@ package com.afornalik.service.user.attribute;
 
 import com.afornalik.model.User;
 import com.afornalik.service.user.attribute.value.UserStatus;
-import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.FieldValue;
 
 public class FieldBlockStatusChangeAttribute extends EditField {
 
 
 
-    public FieldBlockStatusChangeAttribute(User user, UserTestGenericAttribute<UserStatus> userTestGenericAttribute) {
-        super(user,userTestGenericAttribute);
+    public FieldBlockStatusChangeAttribute(User user, FieldValue<UserStatus> fieldValue) {
+        super(user, fieldValue);
     }
 
 
     private User changeUserAttribute() {
-        if (super.getUserTestGenericAttribute().getT().equals(UserStatus.BLOCKED)) {
+        if (super.getFieldValue().getT().equals(UserStatus.BLOCKED)) {
             super.getUser().setBlocked(UserStatus.UNBLOCKED);
-        } else if (super.getUserTestGenericAttribute().getT().equals(UserStatus.UNBLOCKED)) {
+        } else if (super.getFieldValue().getT().equals(UserStatus.UNBLOCKED)) {
             super.getUser().setBlocked(UserStatus.BLOCKED);
         }
         return super.getUser();

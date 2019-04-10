@@ -7,7 +7,7 @@ import com.afornalik.service.security.PasswordGenerator;
 import com.afornalik.service.security.PasswordGeneratorApacheCommonLangImpl;
 import com.afornalik.service.user.UserRepository;
 import com.afornalik.service.user.attribute.*;
-import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.FieldValue;
 import com.afornalik.view.LoginUserView;
 
 public class UserController {
@@ -31,10 +31,10 @@ public class UserController {
 
     public void edit(EditField editField) {
 
-        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(),editField.getUserTestGenericAttribute());
-        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
-        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
-        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), editField.getUserTestGenericAttribute());
+        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(),editField.getFieldValue());
+        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
+        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
+        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
 
         fieldPasswordChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
         fieldFirstNameChangeAttribute.setNextAttributeClass(fieldLastNameChangeAttribute);
@@ -50,7 +50,7 @@ public class UserController {
 
     public void resetPassword() {
             String newPassword = passwordGenerator.generatePassword();
-            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new UserTestGenericAttribute<String>(newPassword)));
+            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new FieldValue<String>(newPassword)));
             mailService.sendNewPassword(userSession.getLoggedUser());
 
     }

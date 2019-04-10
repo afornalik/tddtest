@@ -1,17 +1,17 @@
 package com.afornalik.service.user.attribute;
 
 import com.afornalik.model.User;
-import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.FieldValue;
 
 public class FieldLastNameChangeAttribute extends EditField {
 
 
-    public FieldLastNameChangeAttribute(User user, UserTestGenericAttribute<String> userTestGenericAttribute) {
-        super(user,userTestGenericAttribute);
+    public FieldLastNameChangeAttribute(User user, FieldValue<String> fieldValue) {
+        super(user, fieldValue);
     }
 
     private User changeUserAttribute() {
-        super.getUser().setLastName(super.getUserTestGenericAttribute().getT().toString());
+        super.getUser().setLastName(super.getFieldValue().getT().toString());
         return super.getUser();
     }
 

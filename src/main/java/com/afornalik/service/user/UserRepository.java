@@ -8,8 +8,6 @@ public interface UserRepository {
 
     boolean ifUserExist(User user);
 
-    User select(User user);
-
     void delete(User user);
 
     User selectByFirstName(String firstName);

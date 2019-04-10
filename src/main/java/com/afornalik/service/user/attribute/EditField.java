@@ -1,25 +1,25 @@
 package com.afornalik.service.user.attribute;
 
 import com.afornalik.model.User;
-import com.afornalik.service.user.attribute.value.UserTestGenericAttribute;
+import com.afornalik.service.user.attribute.value.FieldValue;
 
 public abstract class EditField{
 
     private EditField nextAttributeClass;
     private final User user;
-    private final UserTestGenericAttribute userTestGenericAttribute;
+    private final FieldValue fieldValue;
 
-    public EditField(User user, UserTestGenericAttribute userTestGenericAttribute) {
+    public EditField(User user, FieldValue fieldValue) {
         this.user = user;
-        this.userTestGenericAttribute = userTestGenericAttribute;
+        this.fieldValue = fieldValue;
     }
 
     public User getUser() {
         return user;
     }
 
-    public UserTestGenericAttribute getUserTestGenericAttribute() {
-        return userTestGenericAttribute;
+    public FieldValue getFieldValue() {
+        return fieldValue;
     }
 
     public void setNextAttributeClass(EditField nextAttributeClass) {
