@@ -31,10 +31,10 @@ public class UserController {
 
     public void edit(EditField editField) {
 
-        EditField fieldBlockStatusChangeAttribute = new FieldBlockStatusChangeAttribute(userSession.getLoggedUser(),editField.getFieldValue());
-        EditField fieldFirstNameChangeAttribute = new FieldFirstNameChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
-        EditField fieldLastNameChangeAttribute = new FieldLastNameChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
-        EditField fieldPasswordChangeAttribute = new FieldPasswordChangeAttribute(userSession.getLoggedUser(), editField.getFieldValue());
+        EditField fieldBlockStatusChangeAttribute = new FieldUserStatusValue(userSession.getLoggedUser(),editField.getCurrentFieldValue());
+        EditField fieldFirstNameChangeAttribute = new FieldFirstNameValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
+        EditField fieldLastNameChangeAttribute = new FieldLastNameValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
+        EditField fieldPasswordChangeAttribute = new FieldPasswordValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
 
         fieldPasswordChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
         fieldFirstNameChangeAttribute.setNextAttributeClass(fieldLastNameChangeAttribute);
@@ -50,7 +50,7 @@ public class UserController {
 
     public void resetPassword() {
             String newPassword = passwordGenerator.generatePassword();
-            edit(new FieldPasswordChangeAttribute(userSession.getLoggedUser(), new FieldValue<String>(newPassword)));
+            edit(new FieldPasswordValue(userSession.getLoggedUser(), new FieldValue<String>(newPassword)));
             mailService.sendNewPassword(userSession.getLoggedUser());
 
     }

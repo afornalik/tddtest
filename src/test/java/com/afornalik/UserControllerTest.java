@@ -68,8 +68,9 @@ public class UserControllerTest {
         createUserSession();
         String newFirstName = "Ala";
 
+
         //when
-        userController.edit( new FieldFirstNameChangeAttribute(user, new FieldValue<String>(newFirstName)));
+        userController.edit( new FieldFirstNameValue(user, new FieldValue<String>(newFirstName)));
 
         //then
         assertNotEquals(FIRST_NAME, user.getFirstName());
@@ -83,12 +84,10 @@ public class UserControllerTest {
         createUserSession();
         String newLastName = "Nowak";
 
-        System.out.println(userSession.getLoggedUser());
         //when
-        userController.edit(new FieldLastNameChangeAttribute(user, new FieldValue<String>(newLastName)));
+        userController.edit(new FieldLastNameValue(user, new FieldValue<String>(newLastName)));
 
         //then
-        System.out.println(userSession.getLoggedUser());
         assertNotEquals(LAST_NAME, user.getLastName());
         assertEquals(newLastName, user.getLastName());
         then(userRepository).should().save(user);
@@ -100,7 +99,7 @@ public class UserControllerTest {
         createUserSession();
 
         //when
-        userController.edit(new FieldBlockStatusChangeAttribute(user, new FieldValue<UserStatus>(UserStatus.BLOCKED)));
+        userController.edit(new FieldUserStatusValue(user, new FieldValue<UserStatus>(UserStatus.BLOCKED)));
 
         //then
         assertNotEquals(false, user.isBlocked());
@@ -127,7 +126,7 @@ public class UserControllerTest {
         String newPassword = "123456";
 
         //when
-        userController.edit(new FieldPasswordChangeAttribute(user, new FieldValue<String>(newPassword)));
+        userController.edit(new FieldPasswordValue(user, new FieldValue<String>(newPassword)));
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());

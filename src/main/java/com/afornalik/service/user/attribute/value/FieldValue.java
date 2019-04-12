@@ -2,14 +2,14 @@ package com.afornalik.service.user.attribute.value;
 
 public class FieldValue<T> {
 
-    private final T t;
+    private final T typeValue;
 
-    public FieldValue(T t) {
-        this.t = t;
+    public FieldValue(T typeValue) {
+        this.typeValue = typeValue;
     }
 
-    public T getT() {
-        return t;
+    public T getTypeValue() {
+        return typeValue;
     }
 
 }
