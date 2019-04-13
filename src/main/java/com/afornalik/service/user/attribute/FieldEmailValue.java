@@ -3,14 +3,22 @@ package com.afornalik.service.user.attribute;
 import com.afornalik.model.User;
 import com.afornalik.service.user.attribute.value.FieldValue;
 
-public class FieldFirstNameValue extends EditField {
+public class FieldEmailValue extends EditField  {
 
     private final User user;
     private final FieldValue<String> fieldValue;
 
-    public FieldFirstNameValue(User user, FieldValue<String> fieldValue) {
+    public FieldEmailValue(User user, FieldValue<String> fieldValue) {
         this.user = user;
         this.fieldValue = fieldValue;
+    }
+
+    @Override
+    public User changeAttribute(EditField editField) {
+        if (editField instanceof FieldEmailValue) {
+            return changeUserAttribute();
+        }
+        return getNextAttributeClass().changeAttribute(editField);
     }
 
     @Override
@@ -18,16 +26,8 @@ public class FieldFirstNameValue extends EditField {
         return fieldValue;
     }
 
-    @Override
-    public User changeAttribute(EditField editField) {
-        if(editField instanceof FieldFirstNameValue) {
-            return changeUserAttribute();
-        }
-            return getNextAttributeClass().changeAttribute(editField);
-    }
-
     private User changeUserAttribute() {
-        user.setFirstName(fieldValue.getTypeValue());
+        user.setEmail(fieldValue.getTypeValue());
         return user;
     }
 }

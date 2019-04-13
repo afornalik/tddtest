@@ -23,9 +23,8 @@ public class FieldUserStatusValue extends EditField {
     public User changeAttribute(EditField editField) {
         if(editField instanceof FieldUserStatusValue){
             return changeUserAttribute();
-        }else {
-            return getNextAttributeClass().changeAttribute(editField);
         }
+            return getNextAttributeClass().changeAttribute(editField);
     }
 
     private User changeUserAttribute() {

@@ -22,9 +22,8 @@ public class FieldLastNameValue extends EditField {
     public User changeAttribute(EditField editField) {
         if(editField instanceof FieldLastNameValue){
             return changeUserAttribute();
-        }else {
-            return getNextAttributeClass().changeAttribute(editField);
         }
+            return getNextAttributeClass().changeAttribute(editField);
     }
 
     private User changeUserAttribute() {

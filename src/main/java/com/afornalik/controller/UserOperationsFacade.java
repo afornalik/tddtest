@@ -35,8 +35,10 @@ class UserOperationsFacade {
         EditField fieldFirstNameChangeAttribute = new FieldFirstNameValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
         EditField fieldLastNameChangeAttribute = new FieldLastNameValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
         EditField fieldPasswordChangeAttribute = new FieldPasswordValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
+        EditField fieldEmailChangeAttribute = new FieldEmailValue(userSession.getLoggedUser(), editField.getCurrentFieldValue());
 
-        fieldPasswordChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
+        fieldPasswordChangeAttribute.setNextAttributeClass(fieldEmailChangeAttribute);
+        fieldEmailChangeAttribute.setNextAttributeClass(fieldFirstNameChangeAttribute);
         fieldFirstNameChangeAttribute.setNextAttributeClass(fieldLastNameChangeAttribute);
         fieldLastNameChangeAttribute.setNextAttributeClass(fieldBlockStatusChangeAttribute);
 

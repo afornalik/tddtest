@@ -22,9 +22,9 @@ public class FieldPasswordValue extends EditField {
     public User changeAttribute(EditField editField) {
         if(editField instanceof FieldPasswordValue){
             return changeUserAttribute();
-        }else {
-            return getNextAttributeClass().changeAttribute(editField);
         }
+        return getNextAttributeClass().changeAttribute(editField);
+
     }
 
     private User changeUserAttribute() {

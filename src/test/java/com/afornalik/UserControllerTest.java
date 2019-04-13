@@ -42,9 +42,6 @@ public class UserControllerTest {
     @Mock
     private MailService mailService;
 
-    @Mock
-    private LoginUserView loginUserView;
-
     @Before
     public void initValue() {
         userController = new UserController( userRepository, mailService, userSession);
@@ -63,7 +60,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldEditUserFirstName() throws UserUnexistException {
+    public void shouldEditUserFirstName() {
         //given
         createUserSession();
         String newFirstName = "Ala";
@@ -79,7 +76,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldEditUserLastName() throws UserUnexistException {
+    public void shouldEditUserLastName() {
         //given
         createUserSession();
         String newLastName = "Nowak";
@@ -94,7 +91,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldEditUserStatus() throws UserUnexistException {
+    public void shouldEditUserStatus() {
         //given
         createUserSession();
 
@@ -120,8 +117,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldChangePassword() throws UserUnexistException {
-        //give
+    public void shouldChangePassword() {
+        //given
         createUserSession();
         String newPassword = "123456";
 
@@ -130,6 +127,20 @@ public class UserControllerTest {
 
         //then
         assertNotEquals(PASSWORD, user.getPassword());
+        then(userRepository).should().save(user);
+    }
+
+    @Test
+    public void shouldChangeEmail()  {
+        //given
+        createUserSession();
+        String newEmail = "justDummyEmail@nnn.eee";
+
+        //when
+        userController.edit(new FieldEmailValue(user, new FieldValue<String>(newEmail)));
+
+        //then
+        assertNotEquals(EMAIL,user.getEmail());
         then(userRepository).should().save(user);
     }
 
