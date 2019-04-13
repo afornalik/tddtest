@@ -1,6 +1,7 @@
 package com.afornalik.service.user;
 
 import com.afornalik.model.UserSession;
+import com.afornalik.repository.UserRepository;
 import com.afornalik.service.user.exception.IncorrectUserDataException;
 import com.afornalik.service.user.exception.UserAlreadyExistException;
 

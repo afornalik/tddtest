@@ -4,7 +4,7 @@ import com.afornalik.controller.UserController;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
-import com.afornalik.service.user.UserRepository;
+import com.afornalik.repository.UserRepository;
 import com.afornalik.service.user.attribute.*;
 import com.afornalik.service.user.attribute.value.FieldValue;
 import com.afornalik.service.user.attribute.value.UserStatus;
@@ -26,9 +26,10 @@ public class UserControllerTest {
 
     private final String FIRST_NAME = "Andrzej";
     private final String LAST_NAME = "Kowalski";
+    private final String EMAIL = "akowal@xxx.yyy";
     private final String PASSWORD = "654321";
     private final LocalDate CREATE_DATE = LocalDate.now();
-    private final User user = new User(FIRST_NAME, LAST_NAME, PASSWORD, CREATE_DATE);
+    private final User user = new User(FIRST_NAME, LAST_NAME, PASSWORD,EMAIL, CREATE_DATE);
     private UserController userController;
 
 
@@ -46,7 +47,7 @@ public class UserControllerTest {
 
     @Before
     public void initValue() {
-        userController = new UserController( userRepository, mailService, userSession,loginUserView);
+        userController = new UserController( userRepository, mailService, userSession);
     }
 
     @Test
@@ -60,7 +61,6 @@ public class UserControllerTest {
         //then
         assertEquals(resultUser, user);
     }
-
 
     @Test
     public void shouldEditUserFirstName() throws UserUnexistException {

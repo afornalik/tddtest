@@ -5,7 +5,7 @@ import com.afornalik.controller.UserController;
 import com.afornalik.model.User;
 import com.afornalik.model.UserSession;
 import com.afornalik.service.mail.MailService;
-import com.afornalik.service.user.UserRepository;
+import com.afornalik.repository.UserRepository;
 import com.afornalik.service.user.exception.UserUnexistException;
 import com.afornalik.view.LoginUserView;
 import org.junit.Assert;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public class MainControllerTest {
 
-    private final User user = new User("Adam", "Kowalski", "123456", LocalDate.now());
+    private final User user = new User("Adam", "Kowalski", "123456","akowal@xxx.yyy", LocalDate.now());
     private MainController mainController;
 
     @Mock

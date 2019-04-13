@@ -8,7 +8,6 @@ public abstract class EditField<T>{
 
     private EditField nextAttributeClass;
 
-
     public void setNextAttributeClass(EditField nextAttributeClass) {
         this.nextAttributeClass = nextAttributeClass;
     }

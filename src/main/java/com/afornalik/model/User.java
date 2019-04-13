@@ -8,16 +8,19 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String email;
     private final LocalDate createDate;
     private UserStatus isBlocked = UserStatus.UNBLOCKED;
     private String password;
 
-    public User(String firstName, String lastName, String password, LocalDate createDate) {
+    public User(String firstName, String lastName, String password,String email, LocalDate createDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.email = email;
         this.createDate = createDate;
     }
+
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -33,6 +36,14 @@ public class User {
 
     public void setBlocked(UserStatus blocked) {
         isBlocked = blocked;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {
